@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import ChatContainer from './ChatContainer/ChatContainer'
 import Video from './VideoContainer/Video'
+import Link from './VideoContainer/Link'
 import { addMessage } from '../../actions/chatAction'
 import { pickRoom } from '../../actions/roomAction'
 
@@ -28,14 +29,20 @@ class ShowPage extends Component {
 
     }
     this.myConnection.ondatachannel = (e) => {
-      console.log(e.channel)
       e.channel.onmessage = (message) => {
-        console.log("message", message)
         const finalData = JSON.parse(message.data)
-        console.log("final data", finalData)
-        this.props.addMessage(finalData.currentUser, finalData.message)
-        if (finalData.type === 'pause') {
-          this.setState({videoMsg: finalData})
+        switch (finalData.type) {
+          case "pause":
+            this.setState({videoMsg: finalData})
+            break;
+          case "play":
+            this.setState({videoMsg: finalData})
+            break
+          case "video":
+            this.setState({videoMsg: finalData})
+            break
+          default:
+            this.props.addMessage(finalData.currentUser, finalData.message)
         }
       }
     }
@@ -78,7 +85,6 @@ class ShowPage extends Component {
   }
 
   onJoin = (data) => {
-    console.log("data", data)
     this.props.addMessage(data.username, `${data.username} has join the room!`)
   }
 
@@ -134,16 +140,22 @@ class ShowPage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>ShowPage Component</h1>
+      <div className="container">
+        <h3>Room: {this.props.room}</h3>
+        <div class="row">
+          <div className="left">
+            <Video
+            dataChannel={this.dataChannel}
+            videoMsg={this.state.videoMsg}
+            />
+            <Link dataChannel={this.dataChannel}/>
+          </div>
 
-        <Video
-          dataChannel={this.dataChannel}
-          videoMsg={this.state.videoMsg}
-        />
+          <div className="right">
+            <ChatContainer dataChannel={this.dataChannel} />
+          </div>
+        </div>
 
-        <div>{this.props.room}</div>
-        <ChatContainer dataChannel={this.dataChannel} />
         <button onClick={this.goBack}>Go Back</button>
       </div>
     )

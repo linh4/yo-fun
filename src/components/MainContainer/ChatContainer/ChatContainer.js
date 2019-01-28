@@ -6,9 +6,12 @@ class ChatContainer extends Component {
   render() {
     return (
       <div>
-        <h1>ChatContainer Component</h1>
-        <Display />
-        <ChatBox dataChannel={this.props.dataChannel} />
+        <div class="display">
+          <Display />
+        </div>
+        <div class="chatbox">
+          <ChatBox dataChannel={this.props.dataChannel} />
+        </div>
       </div>
     )
   }

@@ -31,7 +31,7 @@ class User extends Component {
   render() {
     return (
       <div>
-        <h1>Hi</h1>
+        <h1>Welcome to Yo-Fun</h1>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -41,7 +41,7 @@ class User extends Component {
           <input type="submit"/>
         </form>
         {this.state.valid ? <div></div> : (
-          <div>Go away</div>
+          <div>Username exists</div>
         )}
       </div>
     )

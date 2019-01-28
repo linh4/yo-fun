@@ -17,7 +17,7 @@ class App extends Component {
 
   render(){
     return (
-      <div>
+      <div className="App">
         {this.props.username ? (
           this.props.chosenRoom ? <ShowPage connection={this.connection} /> : (
             <div>

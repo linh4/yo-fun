@@ -33,7 +33,7 @@ class NewRoom extends Component {
   render() {
     return (
       <div>
-        <h1>Create a Room</h1>
+        <h3>Create a Room</h3>
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="roomname"/>
           <input type="submit" />
@@ -42,8 +42,6 @@ class NewRoom extends Component {
         {this.state.valid ? <div></div> : (
           <div>Name already exists</div>
         )}
-
-        <h1>Or Pick a Room</h1>
       </div>
     )
   }

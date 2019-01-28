@@ -6,7 +6,6 @@ class ChatBox extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target.msg.value)
     const msg = JSON.stringify({currentUser: this.props.user, message: e.target.msg.value})
     this.props.dataChannel.send(msg)
     this.props.addMessage(this.props.user, e.target.msg.value)
@@ -16,8 +15,7 @@ class ChatBox extends Component {
   render() {
     return (
       <div>
-        <h1>ChatBox Component</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className="textbox">
           <input type="text" name="msg"/>
           <input type="submit"/>
         </form>

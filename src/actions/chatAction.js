@@ -4,3 +4,10 @@ export const addMessage = (username, msg) => {
     payload: {username, msg}
   }
 }
+
+export const addUrl = (url) => {
+  return {
+    type: 'ADD_URL',
+    payload: url
+  }
+}

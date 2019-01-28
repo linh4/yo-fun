@@ -30,7 +30,7 @@ class RoomList extends Component {
   render() {
     return (
       <div>
-        <h1>RoomList Component</h1>
+        <h3>Or pick a room:</h3>
         <select onChange={this.handleChange}>
           <option>Select a room</option>
           {this.state.rooms.map(room => (
