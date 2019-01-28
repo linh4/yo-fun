@@ -3,3 +3,5 @@
 Run Locally: 
 - run `node server.js` first
 - run `npm i && npm start`
+
+Server:  https://github.com/linh4/yo-fun-server
