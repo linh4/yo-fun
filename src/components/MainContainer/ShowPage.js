@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import ChatContainer from './ChatContainer/ChatContainer'
+import Video from './VideoContainer/Video'
 import { addMessage } from '../../actions/chatAction'
 import { pickRoom } from '../../actions/roomAction'
 
 class ShowPage extends Component {
+
+  state = {
+    videoMsg: null
+  }
 
   constructor(props){
     super(props)
@@ -23,9 +28,15 @@ class ShowPage extends Component {
 
     }
     this.myConnection.ondatachannel = (e) => {
+      console.log(e.channel)
       e.channel.onmessage = (message) => {
+        console.log("message", message)
         const finalData = JSON.parse(message.data)
+        console.log("final data", finalData)
         this.props.addMessage(finalData.currentUser, finalData.message)
+        if (finalData.type === 'pause') {
+          this.setState({videoMsg: finalData})
+        }
       }
     }
 
@@ -76,7 +87,7 @@ class ShowPage extends Component {
   }
 
   componentDidMount() {
-    
+
     if (this.props.isCreator) {
       this.myConnection.createOffer(offer => {
         this.myConnection.setLocalDescription(offer)
@@ -125,6 +136,12 @@ class ShowPage extends Component {
     return (
       <div>
         <h1>ShowPage Component</h1>
+
+        <Video
+          dataChannel={this.dataChannel}
+          videoMsg={this.state.videoMsg}
+        />
+
         <div>{this.props.room}</div>
         <ChatContainer dataChannel={this.dataChannel} />
         <button onClick={this.goBack}>Go Back</button>
