@@ -22,8 +22,16 @@ class RoomList extends Component {
 
   handleChange = (e) => {
     if (e.target.value !== 'Select a room') {
+      const obj2 = JSON.stringify({type: 'joinRoomname', roomname: e.target.value})
+      this.props.connection.send(obj2)
+
+
+      const obj = JSON.stringify({type: 'checkRoomname', roomname: e.target.value})
+      this.props.connection.send(obj)
+
+
       this.props.pickRoom(e.target.value)
-      this.props.isJoiner()
+      // this.props.isJoiner()
     }
   }
 

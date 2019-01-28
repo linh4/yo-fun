@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import ChatContainer from './ChatContainer/ChatContainer'
 import { addMessage } from '../../actions/chatAction'
 import { pickRoom } from '../../actions/roomAction'
+import { isCreator, isJoiner } from '../../actions/userAction'
 
 class ShowPage extends Component {
 
@@ -66,9 +67,24 @@ class ShowPage extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isCreator) {
+  onCheckingRoom = (data) => {
+    if (data.checkRoom === 1) {
+      this.props.isCreator()
       this.myConnection.createOffer(offer => {
+        console.log("offer after checkroom", offer)
+        this.myConnection.setLocalDescription(offer)
+        const message = JSON.stringify({type: 'offer', offer: offer, roomname: this.props.room, username: this.props.username})
+        this.props.connection.send(message)
+      }, console.log)
+    } else {
+      this.props.isJoiner()
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isCreatorObj) {
+      this.myConnection.createOffer(offer => {
+        console.log("offer before checkroom", offer)
         this.myConnection.setLocalDescription(offer)
         const message = JSON.stringify({type: 'offer', offer: offer, roomname: this.props.room, username: this.props.username})
         this.props.connection.send(message)
@@ -81,6 +97,7 @@ class ShowPage extends Component {
 
     this.props.connection.onmessage = (message) => {
       const data = JSON.parse(message.data)
+      // console.log("data", data)
       switch (data.type) {
         case 'login':
           this.onLogin(data)
@@ -94,6 +111,9 @@ class ShowPage extends Component {
         case 'candidate':
           this.onCandidate(data)
           break
+        case 'numOfPeople':
+          this.onCheckingRoom(data)
+        break
       }
     }
   }
@@ -101,6 +121,8 @@ class ShowPage extends Component {
 
   goBack = () => {
     this.props.pickRoom(null)
+    let obj = JSON.stringify({type: 'setRoomNull', roomname: this.props.room})
+    this.props.connection.send(obj)
   }
 
   render() {
@@ -119,8 +141,8 @@ const mapStateToProps = (state) => {
   return {
     room: state.room.roomname,
     username: state.user.username,
-    isCreator: state.user.isCreator
+    isCreatorObj: state.user.isCreator
     };
 };
 
-export default connect(mapStateToProps, { addMessage, pickRoom })(ShowPage)
+export default connect(mapStateToProps, { addMessage, pickRoom, isCreator, isJoiner })(ShowPage)
