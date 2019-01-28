@@ -66,7 +66,17 @@ class ShowPage extends Component {
     }
   }
 
+  onJoin = (data) => {
+    console.log("data", data)
+    this.props.addMessage(data.username, `${data.username} has join the room!`)
+  }
+
+  onLeave = (data) => {
+    this.props.addMessage(data.username, `${data.username} has left the room!`)
+  }
+
   componentDidMount() {
+    
     if (this.props.isCreator) {
       this.myConnection.createOffer(offer => {
         this.myConnection.setLocalDescription(offer)
@@ -94,6 +104,13 @@ class ShowPage extends Component {
         case 'candidate':
           this.onCandidate(data)
           break
+        case 'join':
+          this.onJoin(data)
+          break
+        case 'leave':
+        console.log('hit leave')
+          this.onLeave(data)
+          break
       }
     }
   }
@@ -101,6 +118,7 @@ class ShowPage extends Component {
 
   goBack = () => {
     this.props.pickRoom(null)
+    this.props.connection.send(JSON.stringify({type: 'setRoomNull'}))
   }
 
   render() {
