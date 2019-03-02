@@ -1,4 +1,4 @@
-# yo-fun
+# yotu-fun
 
 A Youtube video streaming with chat function, built in 2 days!
 
