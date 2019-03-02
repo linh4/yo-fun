@@ -1,6 +1,6 @@
 # yo-fun
 
-This app is built in 2 days so there are still some bugs but the chat and youtube video streaming work!!
+A Youtube video streaming with chat function, built in 2 days!
 
 Run Locally: 
 - run `node server.js` first
